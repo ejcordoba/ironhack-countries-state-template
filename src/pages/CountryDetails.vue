@@ -1,23 +1,27 @@
 <template>
-  <img src="#" alt="country flag" style="width: 300px" />
-  <h1>Name</h1>
+  <img
+    :src="`https://flagpedia.net/data/flags/icon/72x54/
+${countryStore.selectedCountry.flag}.png`"
+    alt="country flag"
+  />
+  <h1>{{ countryStore.selectedCountry.name }}</h1>
   <table class="table">
     <thead></thead>
     <tbody>
       <tr>
         <td style="width: 30%">Capital</td>
-        <td>Capital</td>
+        <td>{{ countryStore.selectedCountry.capital }}</td>
       </tr>
       <tr>
         <td>Area</td>
-        <td>Area km <sup>2</sup></td>
+        <td>{{ countryStore.selectedCountry.area }} km <sup>2</sup></td>
       </tr>
       <tr>
         <td>Borders</td>
         <td>
           <ul>
-            <li>
-              <a href="/">Border</a>
+            <li v-for="border in countryStore.selectedCountry.borders">
+              <a href="/">{{ border }}</a>
             </li>
           </ul>
         </td>
@@ -26,6 +30,12 @@
   </table>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref, watch } from "vue";
+import { storeToRefs } from "pinia";
+import { useCountryStore } from "../stores/country.js";
+
+const countryStore = useCountryStore();
+</script>
 
 <style></style>

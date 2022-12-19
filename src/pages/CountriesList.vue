@@ -2,7 +2,7 @@
   <div class="list-group">
     <div
       class="list-group-item list-group-item-action"
-      v-for="el in countries"
+      v-for="el in countryStore.countries"
       @click="showCountry(el)"
     >
       <img
@@ -16,16 +16,19 @@ ${el.alpha2Code.toLowerCase()}.png`"
 
 <script setup>
 import { ref } from "vue";
+import { useCountryStore } from "../stores/country.js";
 
-const countries = ref(null);
+const countryStore = useCountryStore();
 
-async function getCountries() {
-  const res = await fetch("https://ih-countries-api.herokuapp.com/countries");
-  const finalRes = await res.json();
-  countries.value = finalRes;
+countryStore.getCountries();
+
+function showCountry(el) {
+  countryStore.selectedCountry.flag = el.alpha2Code.toLowerCase();
+  countryStore.selectedCountry.name = el.name.common;
+  countryStore.selectedCountry.capital = el.capital[0];
+  countryStore.selectedCountry.area = el.area;
+  countryStore.selectedCountry.borders = el.borders;
 }
-
-getCountries();
 </script>
 
 <style></style>
